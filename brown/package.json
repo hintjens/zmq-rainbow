@@ -1,0 +1,41 @@
+{
+  "author": "Allan Ebdrup",
+  "name": "zmq-brown",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Muscula/nodebase"
+  },
+  "private": false,
+  "main": "./lib/app.js",
+  "engines": {
+    "node": ">=0.10.21"
+  },
+  "dependencies": {
+    "zmq": "~2.6.0"
+  },
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "devDependencies": {
+    "mocha": "",
+    "chai": "",
+    "sinon": "",
+    "sinon-chai": "",
+    "mocha-jshint": ""
+  },
+  "description": "nodebase\r --------\r This is my boilerplate for when I start a new `node.js` project. I copy this repository and start from there.",
+  "bugs": {
+    "url": "https://github.com/Muscula/nodebase/issues"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "boilerplate",
+    "node",
+    "project"
+  ],
+  "license": "Apache2",
+  "homepage": "https://github.com/Muscula/nodebase"
+}
