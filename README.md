@@ -7,13 +7,15 @@ The system consists of three components: the Producer, the Store, and the Subscr
 
 ## Producer
 
-The Producer connects a DEALER socket to the Store's DEALER socket on port `30000`, produces messages (see message format below), and sends them to its DEALER socket.
+* The Producer connects a DEALER socket to the Store's DEALER socket on port `30000`, produces messages (see message format below), and sends them to its DEALER socket.
 
-## Subscriber (PUB)
+## Subscriber (PUB/SUB)
 
-The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, subscribes to all channels (subscribe to `""`), and then receives and prints messages from that socket.
+* This Subscriber type is deprecated and should not be used.
 
-## Subscriber (ROUTER)
+* The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, subscribes to all channels (subscribe to `""`), and then receives and prints messages from that socket.
+
+## Subscriber (DELAER/ROUTER)
 
 * The Subscriber connects a DEALER socket to the Store's ROUTER socket on port `30002`. 
 
@@ -31,7 +33,9 @@ The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, 
 
 ### backend pub
 
-* The 'backend pub' socket is a PUB socket. This is deprecated and should not be used.
+* This is deprecated and should not be used.
+
+* The 'backend pub' socket is a PUB socket.
 
 * The Store binds the 'backend pub' socket to all TCP/IP interfaces on port 30001, i.e. the endpoint "tcp://*:30001".
 
@@ -45,7 +49,9 @@ The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, 
 
 * The Store receives messages from the 'frontend' and sends them to the 'backend router' clients.
 
-* When a client connects to the 'backend router' socket the client will send a string containing the name of the channel it wishes to subscribe to messages from as the first message. If this is empty the client will recieve messages from all channels.
+* When a client connects to the 'backend router' socket the client will send a string containing the name of the channel it wishes to subscribe to messages from as the first message. 
+
+* If the first message is empty the client will recieve messages from all channels.
 
 ## Message format
 
