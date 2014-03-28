@@ -15,7 +15,7 @@ The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, 
 
 ## Subscriber (ROUTER)
 
-The Subscriber connects a DEALER socket to the Store's ROUTER socket on port `30002`, specifying the channel to subscribe to as the first message. If this is empty it will receive messages from all channels and print them.
+The Subscriber connects a DEALER socket to the Store's ROUTER socket on port `30002`, specifying the channel to subscribe to as the first message. If this is empty it will receive messages from all channels.
 
 ## Store
 
@@ -41,8 +41,9 @@ The Subscriber connects a DEALER socket to the Store's ROUTER socket on port `30
 
 * The Store binds the 'backend router' socket to all TCP/IP interfaces on port 30002, i.e. the endpoint "tcp://*:30002".
 
-* The Store receives messages from the 'frontend' and sends them to the 'backend router' clients matching their channel specification.
+* The Store receives messages from the 'frontend' and sends them to the 'backend router' clients.
 
+* When a client connects to the 'backend router' socket the client will send a string containing the name of the channel it wishes to subscribe to messages from as the first message. If this is empty the client will recieve messages from all channels.
 
 ## Message format
 
