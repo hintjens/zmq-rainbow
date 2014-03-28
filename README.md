@@ -15,7 +15,9 @@ The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, 
 
 ## Subscriber (ROUTER)
 
-The Subscriber connects a DEALER socket to the Store's ROUTER socket on port `30002`, specifying the channel to subscribe to as the first message. If this is empty it will receive messages from all channels.
+* The Subscriber connects a DEALER socket to the Store's ROUTER socket on port `30002`. 
+
+* The Subscriber can specify the channel to subscribe to as the first message. If this is empty it will receive messages from all channels.
 
 ## Store
 
