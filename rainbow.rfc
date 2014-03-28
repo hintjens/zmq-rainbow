@@ -1,0 +1,35 @@
+This is a proposal for a new RFC.
+
+The following ABNF grammar defines the Rainbow protocol:
+
+    rainbow_msg     = *(  subscribe |  publish |  deliver |  wtf )
+
+    ;         Subscribe to a channel
+    C:subscribe     = signature %d1 channel
+    signature       = %xAA %d0              ; two octets
+    channel         = string                ; Name of channel
+
+    ;         Publish an event to a channel
+    C:publish       = signature %d2 channel content
+    channel         = string                ; Name of channel
+    content         = frame                 ; Content frame
+
+    ;         Deliver a new event off a channel
+    S:deliver       = signature %d3 channel content
+    channel         = string                ; Name of channel
+    content         = frame                 ; Content frame
+
+    ;         Reject client command with error
+    S:wtf           = signature %d4 reason
+    reason          = string                ; Error reason
+
+    ; A frame is zero or more octets encoded as a ZeroMQ frame
+    frame           = *OCTET
+
+    ; Strings are always length + text contents
+    string          = number-1 *VCHAR
+
+    ; Numbers are unsigned integers in network byte order
+    number-1        = 1OCTET
+
+   
