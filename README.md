@@ -13,3 +13,11 @@ The Store accepts incoming messages on port `30000` and publishes events on port
 
 
 ## Subscriber
+The subscriber 
+
+
+# Message format
+Messages contain two frames:
+
+ - `channel`: string representing your communication channel. This will be your team color.
+ - `message`: arbitrary content of the message.
