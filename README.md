@@ -10,7 +10,9 @@ The Producer connects to the Store on port `30000`, produces messages, and sends
 
 
 ## Store
-The Store accepts incoming messages on port `30000` and publishes messages on port `30001`.
+The Store will bind a Dealer socket to all available ip addresses (use `*`) on port `30000` and listen to incoming messages.
+
+The Store will bind a Publisher socket on all available ip addresses (use `*`) on port `30001`. This will publish messages received on the Dealer socket.
 
 
 ## Subscriber
