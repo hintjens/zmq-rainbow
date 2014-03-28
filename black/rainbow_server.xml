@@ -1,0 +1,23 @@
+<class
+    name = "rainbow_server"
+    title = "Rainbow server"
+    proto = "rainbow_msg"
+    script = "zproto_server_c"
+    >
+    This is a server implementation for the Rainbow protocol
+
+    <state name = "start">
+        <event name = "subscribe" next = "subscribed">
+            <action name = "susbcribe the client" />
+        </event>
+        <event name = "publish" next = "ready">
+            <action name = "publish the event" />
+        </event>
+    </state>
+
+    <state name = "subscribed">
+        <event name = "have event" next = "subscribed">
+            <action name = "send" message = "deliver" />
+        </event>
+    </state>
+</class>

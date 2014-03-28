@@ -1,0 +1,30 @@
+<class
+    name = "rainbow_msg"
+    signature = "0"
+    title = "Rainbow protocol"
+    script = "zproto_codec_c"
+    >
+    This is a codec for the Rainbow protocol
+
+    <message name = "subscribe" role = "client">
+        Subscribe to a channel
+        <field name = "channel" type = "string">Name of channel</field>
+    </message>
+
+    <message name = "publish" role = "client">
+        Publish an event to a channel
+        <field name = "channel" type = "string">Name of channel</field>
+        <field name = "content" type = "frame">Content frame</field>
+    </message>
+
+    <message name = "deliver" role = "server">
+        Deliver a new event off a channel
+        <field name = "channel" type = "string">Name of channel</field>
+        <field name = "content" type = "frame">Content frame</field>
+    </message>
+    
+    <message name = "wtf" role = "server">
+        Reject client command with error
+        <field name = "reason" type = "string">Error reason</field>
+    </message>
+</class>
