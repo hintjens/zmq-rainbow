@@ -8,10 +8,12 @@
 
     <state name = "start">
         <event name = "subscribe" next = "subscribed">
-            <action name = "susbcribe the client" />
+            <action name = "subscribe the client" />
+            <action name = "send" message = "wtf" />
         </event>
         <event name = "publish" next = "ready">
             <action name = "publish the event" />
+            <action name = "send" message = "wtf" />
         </event>
     </state>
 

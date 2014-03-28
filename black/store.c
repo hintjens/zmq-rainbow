@@ -1,24 +1,15 @@
 //  Store
 
 #include <czmq.h>
+#include "rainbow_server.h"
 
 int main (void)
 {
-    zctx_t *ctx = zctx_new ();
-    
-    void *frontend = zsocket_new (ctx, ZMQ_DEALER);
-    zsocket_bind (frontend, "tcp://*:30000");
-    
-    void *backend = zsocket_new (ctx, ZMQ_PUB);
-    zsocket_bind (backend, "tcp://*:30001");
-    
-    while (true) {
-        zmsg_t *msg = zmsg_recv (frontend);
-        if (!msg)
-            break;
-        zmsg_dump (msg);
-        zmsg_send (&msg, backend);
-    }
-    zctx_destroy (&ctx);
+    rainbow_server_t *self = rainbow_server_new ();
+    assert (self);
+    rainbow_server_bind (self, "tcp://*:30002");
+    while (!zctx_interrupted)
+        sleep (1);
+    rainbow_server_destroy (&self);
     return 0;
 }

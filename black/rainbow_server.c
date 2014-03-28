@@ -87,11 +87,11 @@ client_terminate (client_t *self)
 
 
 //  --------------------------------------------------------------------------
-//  susbcribe_the_client
+//  subscribe_the_client
 //
 
 static void
-susbcribe_the_client (client_t *self)
+subscribe_the_client (client_t *self)
 {
 
 }

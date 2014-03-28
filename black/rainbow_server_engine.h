@@ -140,6 +140,24 @@ typedef enum {
     have_event_event = 4
 } event_t;
 
+//  Names for animation
+static char *
+s_state_name [] = {
+    "",
+    "Start",
+    "Subscribed",
+    "Ready"
+};
+
+static char *
+s_event_name [] = {
+    "",
+    "SUBSCRIBE",
+    "PUBLISH",
+    "$other",
+    "have event"
+};
+ 
 
 //  ---------------------------------------------------------------------
 //  Context for the server task. This embeds the application-level
@@ -187,7 +205,7 @@ typedef struct {
 static void
     s_server_client_execute (s_server_t *server, s_client_t *client, int event);
 static void
-    susbcribe_the_client (client_t *self);
+    subscribe_the_client (client_t *self);
 static void
     publish_the_event (client_t *self);
 
@@ -452,6 +470,8 @@ static void
 s_server_control_message (s_server_t *self)
 {
     zmsg_t *msg = zmsg_recv (self->pipe);
+    zclock_log ("API command:");
+    zmsg_dump (msg);
     char *method = zmsg_popstr (msg);
     if (streq (method, "BIND")) {
         char *endpoint = zmsg_popstr (msg);
@@ -501,12 +521,27 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
         client->event = client->next_event;
         client->next_event = (event_t) 0;
         client->exception = (event_t) 0;
+        zclock_log ("%6d: %s:",
+            client->client_id, s_state_name [client->state]);
+        zclock_log ("%6d:     %s",
+            client->client_id, s_event_name [client->event]);
         switch (client->state) {
             case start_state:
                 if (client->event == subscribe_event) {
                     if (!client->exception) {
-                        //  susbcribe the client
-                        susbcribe_the_client (&client->client);
+                        //  subscribe the client
+                        zclock_log ("%6d:         $ subscribe the client", client->client_id);
+                        subscribe_the_client (&client->client);
+                    }
+                    if (!client->exception) {
+                        //  send wtf
+                        zclock_log ("%6d:         $ send wtf", client->client_id);
+                        rainbow_msg_set_id (client->client.reply, RAINBOW_MSG_WTF);
+                        zclock_log ("%6d: Send message to client", client->client_id);
+                        rainbow_msg_dump (client->client.reply);
+                        rainbow_msg_send (&(client->client.reply), self->router);
+                        client->client.reply = rainbow_msg_new (0);
+                        rainbow_msg_set_routing_id (client->client.reply, client->routing_id);
                     }
                     if (!client->exception) {
                         client->state = subscribed_state;
@@ -517,7 +552,18 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
                 if (client->event == publish_event) {
                     if (!client->exception) {
                         //  publish the event
+                        zclock_log ("%6d:         $ publish the event", client->client_id);
                         publish_the_event (&client->client);
+                    }
+                    if (!client->exception) {
+                        //  send wtf
+                        zclock_log ("%6d:         $ send wtf", client->client_id);
+                        rainbow_msg_set_id (client->client.reply, RAINBOW_MSG_WTF);
+                        zclock_log ("%6d: Send message to client", client->client_id);
+                        rainbow_msg_dump (client->client.reply);
+                        rainbow_msg_send (&(client->client.reply), self->router);
+                        client->client.reply = rainbow_msg_new (0);
+                        rainbow_msg_set_routing_id (client->client.reply, client->routing_id);
                     }
                     if (!client->exception) {
                         client->state = ready_state;
@@ -531,7 +577,10 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
                     //  Process all other events
                     if (!client->exception) {
                         //  send wtf
+                        zclock_log ("%6d:         $ send wtf", client->client_id);
                         rainbow_msg_set_id (client->client.reply, RAINBOW_MSG_WTF);
+                        zclock_log ("%6d: Send message to client", client->client_id);
+                        rainbow_msg_dump (client->client.reply);
                         rainbow_msg_send (&(client->client.reply), self->router);
                         client->client.reply = rainbow_msg_new (0);
                         rainbow_msg_set_routing_id (client->client.reply, client->routing_id);
@@ -543,7 +592,10 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
                 if (client->event == have_event_event) {
                     if (!client->exception) {
                         //  send deliver
+                        zclock_log ("%6d:         $ send deliver", client->client_id);
                         rainbow_msg_set_id (client->client.reply, RAINBOW_MSG_DELIVER);
+                        zclock_log ("%6d: Send message to client", client->client_id);
+                        rainbow_msg_dump (client->client.reply);
                         rainbow_msg_send (&(client->client.reply), self->router);
                         client->client.reply = rainbow_msg_new (0);
                         rainbow_msg_set_routing_id (client->client.reply, client->routing_id);
@@ -557,7 +609,10 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
                     //  Process all other events
                     if (!client->exception) {
                         //  send wtf
+                        zclock_log ("%6d:         $ send wtf", client->client_id);
                         rainbow_msg_set_id (client->client.reply, RAINBOW_MSG_WTF);
+                        zclock_log ("%6d: Send message to client", client->client_id);
+                        rainbow_msg_dump (client->client.reply);
                         rainbow_msg_send (&(client->client.reply), self->router);
                         client->client.reply = rainbow_msg_new (0);
                         rainbow_msg_set_routing_id (client->client.reply, client->routing_id);
@@ -569,6 +624,7 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
                 if (client->event == publish_event) {
                     if (!client->exception) {
                         //  publish the event
+                        zclock_log ("%6d:         $ publish the event", client->client_id);
                         publish_the_event (&client->client);
                     }
                 }
@@ -576,7 +632,10 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
                     //  Process all other events
                     if (!client->exception) {
                         //  send wtf
+                        zclock_log ("%6d:         $ send wtf", client->client_id);
                         rainbow_msg_set_id (client->client.reply, RAINBOW_MSG_WTF);
+                        zclock_log ("%6d: Send message to client", client->client_id);
+                        rainbow_msg_dump (client->client.reply);
                         rainbow_msg_send (&(client->client.reply), self->router);
                         client->client.reply = rainbow_msg_new (0);
                         rainbow_msg_set_routing_id (client->client.reply, client->routing_id);
@@ -586,9 +645,13 @@ s_server_client_execute (s_server_t *self, s_client_t *client, int event)
 
         }
         if (client->exception) {
+            zclock_log ("%6d:         ! %s",
+                client->client_id, s_event_name [client->exception]);
             client->next_event = client->exception;
         }
         else {
+            zclock_log ("%6d:         > %s",
+                client->client_id, s_state_name [client->state]);
         }
         if (client->next_event == terminate_event) {
             //  Automatically calls s_client_destroy
@@ -615,6 +678,8 @@ s_server_client_message (s_server_t *self)
         zhash_freefn (self->clients, hashkey, s_client_free);
     }
     free (hashkey);
+    zclock_log ("%6d: Client message", client->client_id);
+    rainbow_msg_dump (request);
 
     //  Any input from client counts as activity
     client->expires_at = zclock_time () + self->timeout;
@@ -632,6 +697,7 @@ s_server_client_message (s_server_t *self)
 static void
 s_server_task (void *args, zctx_t *ctx, void *pipe)
 {
+    zclock_log ("Initialize background server task");
     s_server_t *self = s_server_new (ctx, pipe);
     assert (self);
     zstr_send (self->pipe, "OK");
