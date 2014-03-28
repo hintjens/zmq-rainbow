@@ -7,11 +7,11 @@ The system consists of three components: the Producer, the Store, and the Subscr
 
 ## Producer
 
-The Producer connects a DEALER socket to the Store's DEALER socket on port `30000`, produces messages, and sends them to its DEALER socket.
+The Producer connects a DEALER socket to the Store's DEALER socket on port `30000`, produces messages (see message format below), and sends them to its DEALER socket.
 
 ## Subscriber
 
-The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, subscribes to all channels (subscribe to ""), and then receives and prints messages from that socket.
+The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, subscribes to all channels (subscribe to `""`), and then receives and prints messages from that socket.
 
 ## Store
 
