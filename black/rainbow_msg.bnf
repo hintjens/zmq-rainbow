@@ -4,7 +4,7 @@ The following ABNF grammar defines the Rainbow protocol:
 
     ;         Subscribe to a channel
     C:subscribe     = signature %d1 channel
-    signature       = %xAA %d0              ; two octets
+    signature       = %xAA %xA0             ; two octets
     channel         = string                ; Name of channel
 
     ;         Publish an event to a channel

@@ -5,6 +5,8 @@
 
 int main (void)
 {
+//     rainbow_server_test (false);
+
     rainbow_server_t *self = rainbow_server_new ();
     assert (self);
     rainbow_server_bind (self, "tcp://*:30002");
