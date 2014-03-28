@@ -1,0 +1,15 @@
+{
+  "name": "0mq",
+  "version": "0.0.0",
+  "description": "",
+  "main": "worker.js",
+  "dependencies": {
+    "zmq": "~2.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": " "
+}
