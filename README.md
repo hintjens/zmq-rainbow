@@ -16,7 +16,7 @@ The Store binds a Publisher socket on all available ip addresses (`*`) on port `
 
 
 ## Subscriber
-The Subscriber connects to the Subscriber on port `30001`, receives messages, and prints their channel and message fields. 
+The Subscriber connects to the Store on port `30001` using a subscribe socket, receives messages, and prints their channel and message fields. 
 
 
 # Message format
