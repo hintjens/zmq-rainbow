@@ -29,7 +29,7 @@ The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, 
 
 ## Message format
 
-A messages contains two frames:
+A message contains two frames:
 
 * `channel`: string representing your communication channel. This will be your team color.
 * `content`: arbitrary content of the message.
