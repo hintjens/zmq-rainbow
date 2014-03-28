@@ -1,0 +1,6 @@
+*.o
+store
+producer
+subscriber
+core
+
