@@ -20,4 +20,16 @@
             <action name = "send" message = "deliver" />
         </event>
     </state>
+    
+    <state name = "ready">
+        <event name = "publish">
+            <action name = "publish the event" />
+        </event>
+    </state>
+
+    <state name = "defaults">
+        <event name = "$other">
+            <action name = "send" message = "wtf" />
+        </event>
+    </state>
 </class>

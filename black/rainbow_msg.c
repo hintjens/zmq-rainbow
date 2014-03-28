@@ -256,20 +256,24 @@ rainbow_msg_decode (zmsg_t **msg_p, int socket_type)
 
         case RAINBOW_MSG_PUBLISH:
             GET_STRING (self->channel);
-            //  Get next frame, leave current untouched
-            zframe_t *content = zmsg_pop (msg);
-            if (!content)
-                goto malformed;
-            self->content = content;
+            {
+                //  Get next frame, leave current untouched
+                zframe_t *content = zmsg_pop (msg);
+                if (!content)
+                    goto malformed;
+                self->content = content;
+            }
             break;
 
         case RAINBOW_MSG_DELIVER:
             GET_STRING (self->channel);
-            //  Get next frame, leave current untouched
-            zframe_t *content = zmsg_pop (msg);
-            if (!content)
-                goto malformed;
-            self->content = content;
+            {
+                //  Get next frame, leave current untouched
+                zframe_t *content = zmsg_pop (msg);
+                if (!content)
+                    goto malformed;
+                self->content = content;
+            }
             break;
 
         case RAINBOW_MSG_WTF:
