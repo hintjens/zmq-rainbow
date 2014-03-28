@@ -15,17 +15,30 @@ The Subscriber connects a SUB socket to the Store's PUB socket on port `30001`, 
 
 ## Store
 
-* The Store manages two sockets, a 'frontend' and a 'backend'.
+* The Store manages three sockets, a 'frontend', a 'backend pub', and a 'backend router'.
 
-* The frontend socket is a DEALER socket.
+### frontend
 
-* The backend socket is a PUB socket.
+* The 'frontend' socket is a DEALER socket.
 
-* The Store binds the frontend socket to all TCP/IP interfaces on port 30000, i.e. the endpoint "tcp://*:30000".
+* The Store binds the 'frontend' socket to all TCP/IP interfaces on port 30000, i.e. the endpoint "tcp://*:30000".
 
-* The Store binds the backend socket to all TCP/IP interfaces on port 30001, i.e. the endpoint "tcp://*:30001".
+### backend pub
 
-* The Store then receives messages from the front-end and sends them to the backend.
+* The 'backend pub' socket is a PUB socket. This is deprecated and should not be used.
+
+* The Store binds the 'backend pub' socket to all TCP/IP interfaces on port 30001, i.e. the endpoint "tcp://*:30001".
+
+* The Store receives messages from the 'frontend' and sends them to the 'backend pub'.
+
+### backend router
+
+* The 'backend router' socket is a ROUTER socket.
+
+* The Store binds the 'backend router' socket to all TCP/IP interfaces on port 30002, i.e. the endpoint "tcp://*:30002".
+
+* The Store receives messages from the 'frontend' and sends them to the 'backend router' clients matching their channel specification.
+
 
 ## Message format
 
