@@ -1,7 +1,7 @@
 var zmq = require('zmq');
 
 var input = zmq.socket('dealer');
-var output = zmq.socket('dealer');
+var output = zmq.socket('pub');
 
 input.bindSync('tcp://0.0.0.0:30000');
 output.bindSync('tcp://0.0.0.0:30001');
